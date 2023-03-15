@@ -1,0 +1,31 @@
+{
+  "name": "spectraxpress",
+  "version": "0.0.0",
+  "private": true,
+  "description": "Experience the power of Spectra IoT platform with SpectraXpress - the lightning-fast, effortless, and hassle-free way to demo and explore its capabilities.",
+  "engines": {
+    "node": "18",
+    "npm": "8"
+  },
+  "scripts": {
+    "prepare": "husky install",
+    "lint": "eslint --ignore-path .eslintignore --ext ."
+  },
+  "lint-staged": {
+    "src/**/*.{ts,tsx,js,json}": [
+      "prettier --config .prettierrc --write \"**/*.{ts,js,json}\""
+    ]
+  },
+  "dependencies": {
+    "husky": "^8.0.3"
+  },
+  "devDependencies": {
+    "@types/node": "^18.15.0",
+    "eslint": "^8.26.0",
+    "nodemon": "^2.0.21",
+    "prettier": "^2.8.4"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC"
+}

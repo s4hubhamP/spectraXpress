@@ -1,0 +1,10 @@
+**/node_modules
+**/build
+Dockerfile
+
+.git
+.gitignore
+.prettierignore
+.prettierrc
+.husky
+.env

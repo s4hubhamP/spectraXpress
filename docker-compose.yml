@@ -1,0 +1,21 @@
+services:
+  client:
+    build: ./client
+    environment:
+      - PORT=80 # If we use different port her, it won't work. Reason Unknown
+
+  server:
+    build: ./server
+    environment:
+      - PORT=5100
+      - SOMETHING=${name}
+
+  nginx:
+    image: nginx
+    volumes:
+      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+    ports:
+      - "80:80"
+    depends_on:
+      - client
+      - server
