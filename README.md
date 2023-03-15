@@ -15,8 +15,3 @@ Experience the power of Spectra IoT platform with SpectraXpress - the lightning-
 In both the cases, Once docker compose completes you can visit http://localhost:80 to view the application.
 
 ## Documentation
-
-
-node:18-bullseye-slim -> node:18
-
-nginx -> nginx

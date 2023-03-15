@@ -1,4 +1,4 @@
-FROM node:18 AS build
+FROM node:18-bullseye-slim AS build
 WORKDIR /server
 
 COPY package.json .
@@ -8,7 +8,7 @@ COPY . .
 RUN npm run build
 
 # second stage: create final image
-FROM node:18 AS release
+FROM node:18-bullseye-slim AS release
 WORKDIR /release
 
 COPY --from=build /server/build build
