@@ -9,9 +9,9 @@ import mongoSanitize from 'express-mongo-sanitize'
 
 import {connect, disconnect} from './databases'
 import addMorganTokens from './utils/addMorganTokens'
-
 import indexRoutes from './routes'
 import errorMiddleware from './utils/error'
+import {spectraLogin} from './services/spectra.api'
 
 addMorganTokens(morgan)
 
@@ -50,6 +50,7 @@ app.use(errorMiddleware)
 app.listen(process.env.PORT ?? 9000, async () => {
   console.log(`🚀 App listening on the port ${process.env.PORT}`)
   await connect()
+  await spectraLogin()
 })
 
 const gracefulShutdown = async () => {
@@ -58,8 +59,21 @@ const gracefulShutdown = async () => {
   process.exit()
 }
 
+const handleUncaughtException = async (error: Error) => {
+  console.error(error)
+  await gracefulShutdown()
+  process.exit()
+}
+
+const handleUnhandledRejection = async (reason: any, promise: Promise<any>) => {
+  console.error(reason)
+  await gracefulShutdown()
+  process.exit()
+}
+
 //* close the connection to the database when the app is terminated
 process.on('SIGINT', gracefulShutdown)
 process.on('SIGTERM', gracefulShutdown)
-process.on('unhandledRejection', gracefulShutdown)
 process.on('SIGUSR2', gracefulShutdown) // Sent by nodemon
+process.on('unhandledRejection', handleUnhandledRejection)
+process.on('uncaughtException', handleUncaughtException)
