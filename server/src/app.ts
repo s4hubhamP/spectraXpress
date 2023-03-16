@@ -7,7 +7,7 @@ import morgan from 'morgan'
 import cors from 'cors'
 import mongoSanitize from 'express-mongo-sanitize'
 
-// import {connect, disconnect} from './databases'
+import {connect, disconnect} from './databases'
 import addMorganTokens from './utils/addMorganTokens'
 
 import indexRoutes from './routes'
@@ -47,27 +47,15 @@ app.use('*', (req, res) => {
 
 app.use(errorMiddleware)
 
-// function resolvePort(): string {
-//   // check if the app is not running in development mode and if PORT variable is not set
-//   if (process.env.NODE_ENV === 'production' && !process.env.PORT) {
-//     throw new Error(`PORT variable is not set. Please set the PORT variable in the .env file`)
-//   }
-//   if (process.env.PORT) return process.env.PORT
-//   else {
-//     process.env.PORT = '7100'
-//     return '7100'
-//   }
-// }
-
-app.listen(process.env.PORT, async () => {
+app.listen(process.env.PORT ?? 9000, async () => {
   console.log(`🚀 App listening on the port ${process.env.PORT}`)
-  // await connect()
+  await connect()
 })
 
 const gracefulShutdown = async () => {
   console.log('Gracefully shutting down')
+  await disconnect()
   process.exit()
-  // await disconnect()
 }
 
 //* close the connection to the database when the app is terminated
