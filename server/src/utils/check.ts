@@ -1,8 +1,6 @@
 const prefix: string = 'Check failed'
 
 // Throw an error if the condition fails
-// Strip out error messages for production
-// > Not providing an inline default argument for message as the result is smaller
 export function check(
   condition: any,
   // Can provide a string, or a function that returns a string for cases where

@@ -1,40 +1,10 @@
 import axios from 'axios'
-import jwt from 'jsonwebtoken'
 import {check} from '../utils/check'
+import {getSpectraToken} from './getSpectraToken'
 
 const {SPECTRA_API_URL} = process.env
 check(SPECTRA_API_URL, 'SPECTRA_API_URL is not present in the environment')
 axios.defaults.baseURL = SPECTRA_API_URL
-
-// get token from spectra
-export async function spectraLogin() {
-  const {SPECTRA_ADMIN_LOGIN_EMAIL, SPECTRA_ADMIN_LOGIN_PASSWORD} = process.env
-  check(SPECTRA_ADMIN_LOGIN_EMAIL, 'SPECTRA_ADMIN_LOGIN_EMAIL is not present in the environment')
-  check(SPECTRA_ADMIN_LOGIN_PASSWORD, 'SPECTRA_ADMIN_LOGIN_PASSWORD is not present in the environment')
-
-  const {data} = await axios.post(`${SPECTRA_API_URL}/login`, {
-    email: SPECTRA_ADMIN_LOGIN_EMAIL,
-    password: SPECTRA_ADMIN_LOGIN_PASSWORD,
-  })
-  check(data.auth_bearer, 'Spectra Gave unexpected response from /api/login API')
-
-  console.log('Spectra Login Successful')
-  const decoded: any = jwt.decode(data.auth_bearer)
-  //* Example decoded
-  // {
-  //   userId: '',
-  //   userName: '',
-  //   tenantName: '',
-  //   tenantId: '',
-  //   groupId: '',
-  //   role: '',
-  // }
-
-  check(decoded?.groupId, 'Spectra Gave unexpected response from /api/login API')
-
-  axios.defaults.headers.common['authorization'] = data.auth_bearer
-  axios.defaults.headers.common['data-gid'] = decoded.groupId
-}
 
 // create a tenant in spectra
 export async function createTenant(payload: {
@@ -58,7 +28,12 @@ export async function createTenant(payload: {
   }
 
   return axios
-    .post('/tenant', payloadCopy)
+    .post('/tenant', payloadCopy, {
+      headers: {
+        authorization: getSpectraToken(),
+        'data-gid': 'group-id',
+      },
+    })
     .then(response => {
       return response.data
     })

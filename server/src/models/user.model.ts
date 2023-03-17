@@ -12,34 +12,39 @@ const userSchema = new mongoose.Schema<User>(
       type: String,
       required: true,
     },
-    demos: [
-      {
-        tenantName: {
-          //* this is also default tenant name
-          type: String,
-          required: true,
-          stagesCompleted: [
-            {
-              type: String,
-              required: true,
-              enum: ['tenant', 'products', 'customers-and-sites', 'users-and-groups'],
-            },
-          ],
+    demos: {
+      type: [
+        {
+          tenantName: {
+            //* this is also default tenant name
+            type: String,
+            required: true,
+            stagesCompleted: [
+              {
+                type: String,
+                required: true,
+                enum: ['tenant', 'products', 'customers-and-sites', 'users-and-groups'],
+              },
+            ],
+          },
+          tenantId: {
+            type: mongoose.Types.ObjectId,
+            required: true,
+          },
+          description: String,
+          canUpdate: {
+            type: Boolean,
+            default: true,
+          },
         },
-        tenantId: {
-          type: mongoose.Types.ObjectId,
-          required: true,
-        },
-        description: String,
-        canUpdate: {
-          type: Boolean,
-          default: true,
-        },
-      },
-    ],
+      ],
+      default: [],
+      _id: true,
+    },
   },
   {
     timestamps: true,
+    _id: false,
   },
 )
 

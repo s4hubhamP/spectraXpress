@@ -11,7 +11,6 @@ import {connect, disconnect} from './databases'
 import addMorganTokens from './utils/addMorganTokens'
 import indexRoutes from './routes'
 import errorMiddleware from './utils/error'
-import {spectraLogin} from './services/spectra.api'
 
 addMorganTokens(morgan)
 
@@ -50,7 +49,6 @@ app.use(errorMiddleware)
 app.listen(process.env.PORT ?? 9000, async () => {
   console.log(`🚀 App listening on the port ${process.env.PORT}`)
   await connect()
-  await spectraLogin()
 })
 
 const gracefulShutdown = async () => {
