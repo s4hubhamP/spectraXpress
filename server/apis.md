@@ -23,7 +23,7 @@ payload =>
 
 # update user details
 
-route => `/api/users/:email`
+route => `POST` | `/api/users/:email`
 
 Below are the different stages that you can update
 
